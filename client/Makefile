@@ -40,4 +40,4 @@ MyClientTaskManager.o : MyClientTaskManager.cpp MyClientTaskManager.h
 MyClient.o : MyClient.cpp MyClient.h
 	g++ -c -g MyClient.cpp
 clean:
-	rm test test.o MySockTaskPool.o MySocket.o MySockTask.o MyThread.o MyTask.o MySockTaskManager.o MySockClientTask.o MyTcpClient.o MySockClientTaskPool.o MyClientTaskManager.o MyClient.o
+	rm test test.o MySockTaskPool.o MySocket.o MySockTask.o MyThread.o MyTask.o MySockTaskManager.o MySockClientTask.o MyTcpClient.o MySockClientTaskPool.o MyClientTaskManager.o MyClient.o MyClientTask.o

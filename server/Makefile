@@ -34,4 +34,4 @@ test.o : test.cpp
 MyServerMsgProcess.o : MyServerMsgProcess.cpp
 	g++ -c -g MyServerMsgProcess.cpp
 clean:
-	rm test test.o MySockTaskPool.o MySocket.o MySockTask.o MyThread.o MyTcpServer.o MyBaseServer.o MyServer.o MyTask.o MySockTaskManager.o
+	rm test test.o MySockTaskPool.o MySocket.o MySockTask.o MyThread.o MyTcpServer.o MyBaseServer.o MyServer.o MyTask.o MySockTaskManager.o MyServerMsgProcess.o
