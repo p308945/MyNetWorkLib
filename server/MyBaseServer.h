@@ -1,0 +1,45 @@
+/*************************************************************************
+  > File Name: MyBaseServer.h
+  > Author: huangyun
+  > Mail: 895175589@qq.com 
+  > Created Time: Sat 08 Aug 2015 01:10:00 PM
+ ************************************************************************/
+
+#ifndef _MY_BASE_SERVER_H_
+#define  _MY_BASE_SERVER_H_
+
+#include "MyTcpServer.h"
+#include <vector>
+namespace MyNameSpace
+{
+	class MyBaseServer
+	{
+		public:
+			MyBaseServer() : mComplete(false)
+			{
+
+			}
+			virtual bool reload();	//for hup signal
+			virtual bool init(int port);
+			virtual bool newTask(int sock) = 0;
+			virtual void fini()
+			{
+				mComplete = true;
+			}
+			void mainLoop();
+		private:
+			int serverProcess();
+			bool isFini()
+			{
+				return mComplete;
+			}
+		public:
+			typedef std::vector<MyBaseServer *> Container;
+			typedef std::vector<MyBaseServer *>::iterator Container_IT;
+			static Container mServerContainer;
+		private:
+			bool mComplete;
+			MyTcpServer mTcpServer;
+	};
+}
+#endif
