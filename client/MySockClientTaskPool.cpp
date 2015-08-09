@@ -13,44 +13,43 @@
 
 namespace MyNameSpace
 {
-	class TaskQueue
+	class ClientTaskQueue
 	{
 		public:
 			void addTask(MySockClientTask *task)
 			{
 					MyScopeLock scopeLock(mLock);
-					mTaskQueue.push(task);				
+					mClientTaskQueue.push(task);				
 			}
 
 			virtual void add(MySockClientTask *task) = 0;
 
 			void checkQueue()
 			{
-				std::cerr<<"3333"<<std::endl;
 				{
 					MyScopeLock scopeLock(mLock);
-					while(!mTaskQueue.empty())
+					while(!mClientTaskQueue.empty())
 					{
-						MySockClientTask *task = mTaskQueue.front();
-						mTaskQueueTmp.push(task);
-						mTaskQueue.pop();
+						MySockClientTask *task = mClientTaskQueue.front();
+						mClientTaskQueue.pop();
+						mClientTaskQueueTmp.push(task);
 					}
 				}
 
-				while(!mTaskQueueTmp.empty())
+				while(!mClientTaskQueueTmp.empty())
 				{
-					MySockClientTask *task = mTaskQueue.front();
+					MySockClientTask *task = mClientTaskQueueTmp.front();
 					add(task);
-					mTaskQueue.pop();
+					mClientTaskQueueTmp.pop();
 				}
 			}
 		private:
 			MyLock mLock;
-			std::queue<MySockClientTask*, std::deque<MySockClientTask*> > mTaskQueue;
-			std::queue<MySockClientTask*, std::deque<MySockClientTask*> > mTaskQueueTmp;
+			std::queue<MySockClientTask*, std::deque<MySockClientTask*> > mClientTaskQueue;
+			std::queue<MySockClientTask*, std::deque<MySockClientTask*> > mClientTaskQueueTmp;
 	};
 
-	class MyClientIoThread : public MyThread, public TaskQueue
+	class MyClientIoThread : public MyThread, public ClientTaskQueue
 	{
 		public:
 		MyClientIoThread(MySockClientTaskPool *pool, bool j = true) : mPool(pool), MyThread(j)
@@ -111,9 +110,7 @@ namespace MyNameSpace
 		std::set<MySockClientTask *> taskWillDel;
 		while(!isFini())
 		{
-				std::cerr<<"1111"<<std::endl;
 			checkQueue();
-				std::cerr<<"9999"<<std::endl;
 			int retCode = epoll_wait(epfd, &epev[0], taskSet.size()/*常数级*/, 50/*ms*/);
 			for (int i = 0; i < retCode; ++i)
 			{
@@ -158,7 +155,7 @@ namespace MyNameSpace
 		}
 	}
 
-	class MyClientRecycleThread : public MyThread, public TaskQueue
+	class MyClientRecycleThread : public MyThread, public ClientTaskQueue
 	{
 		public:
 		MyClientRecycleThread(MySockClientTaskPool *pool, bool j = true) : mPool(pool), MyThread(j)
@@ -182,12 +179,9 @@ namespace MyNameSpace
 	{
 		while(!isFini())
 		{
-			std::cerr<<"2222"<<std::endl;
 			checkQueue();
-			std::cerr<<"3333"<<std::endl;
 			if (!taskSet.empty())
 			{
-			std::cerr<<"4444"<<std::endl;
 				std::set<MySockClientTask *> willdel;
 				std::set<MySockClientTask *>::iterator iter = taskSet.begin();
 				for (; iter != taskSet.end(); ++iter)
@@ -206,7 +200,6 @@ namespace MyNameSpace
 				}
 //				taskSet.clear();
 			}
-			std::cerr<<"5555"<<std::endl;
 			usleep(10*1000);
 		}
 	}

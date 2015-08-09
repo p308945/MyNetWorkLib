@@ -41,9 +41,9 @@ namespace MyNameSpace
 
 				while(!mTaskQueueTmp.empty())
 				{
-					MySockTask *task = mTaskQueue.front();
+					MySockTask *task = mTaskQueueTmp.front();
 					add(task);
-					mTaskQueue.pop();
+					mTaskQueueTmp.pop();
 				}
 			}
 		private:
@@ -97,6 +97,7 @@ namespace MyNameSpace
 				return false;
 			}
 			epev.resize(maxCount);
+			return true;
 		}
 		private:
 		MySockTaskPool *mPool;
