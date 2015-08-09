@@ -12,12 +12,13 @@ bool> File Name: MySocket.h
 #include <arpa/inet.h>
 #include <sys/epoll.h>
 #include <memory.h>
+#include "MyLock.h"
 
 namespace MyNameSpace
 {
 
-	const int BIGM = 64 * 1024;
-	const int CHUNK = 64 * 1024;
+	const int BIGM = 32 * 1024;
+	const int CHUNK = 32 * 1024;
 	const int HEAD_LEN = sizeof(uint32_t);
 	namespace
 	{
@@ -39,21 +40,42 @@ namespace MyNameSpace
 					}
 					void writeBuffer(const char *buf, uint32_t len)
 					{
-						moveBuffer();
+						MyScopeLock lock(mLock);
+						std::string str(buf, len);
+//						std::cerr<<__FUNCTION__<<"("<<__LINE__<<") len :"<<len<<"str:"<<str<<std::endl;
 						uint32_t remainLen = mBuffer.size() - writePos;
 						if (remainLen < len)
 						{
+							moveBuffer();
 							uint32_t chunkSize = getChunkSize(mBuffer.size() + len - remainLen);
+							std::cerr<<"chunkSize:"<<chunkSize<<std::endl;
 							mBuffer.resize(chunkSize);
 						}
-						*(uint32_t *)&mBuffer[writePos] = htonl(len);
-						memcpy((void *)&mBuffer[writePos + HEAD_LEN], (void *)buf, len);
-						writePos += len + HEAD_LEN;
+						memcpy((void *)&mBuffer[writePos], (void *)buf, len);
+						writePos += len;
 					}
 
+					int readBuffer(std::vector<char> &msg)
+					{
+						MyScopeLock lock(mLock);
+						int len = completePacketlen();
+						if (len < 0)
+						{
+//							std::cerr<<__FUNCTION__<<"("<<__LINE__<<") no completePacket len :"<<len<<std::endl;
+							return 0;
+						}
+						msg.resize(len);
+						memcpy(&msg[0], &mBuffer[readPos + HEAD_LEN], len);
+						std::string str(&msg[0], len);
+//						std::cerr<<__FUNCTION__<<"("<<__LINE__<<") len :"<<len<<"str:"<<str<<std::endl;
+						readPos += (len + HEAD_LEN);
+						return len;
+					}
+/*
 					char *getPtrAndDrift(int & len)
 					{
 						int l = completePacketlen();
+						std::cerr<<"l:"<<l<<std::endl;
 						if (l < 0)
 						{
 							return NULL;
@@ -61,18 +83,22 @@ namespace MyNameSpace
 						len = l;
 						char * tmp = &mBuffer[readPos + HEAD_LEN];
 						readPos += l + HEAD_LEN;
+						return tmp;
 					}
+					*/
 
 				private:
 					void moveBuffer()
 					{
 						uint32_t len =  writePos - readPos;
 						memmove(&mBuffer[0], &mBuffer[readPos], len);
+						readPos = 0;
+						writePos = len;
 					}
 
 					int completePacketlen()
 					{
-						if ((writePos - readPos) < 4)
+						if ((writePos - readPos) < HEAD_LEN)
 						{
 							return -1;
 						}
@@ -88,6 +114,7 @@ namespace MyNameSpace
 					std::vector<char> mBuffer;
 					uint32_t readPos;
 					uint32_t writePos;
+					MyLock mLock;
 			};
 
 		template<uint32_t SIZE = BIGM>
@@ -101,16 +128,37 @@ namespace MyNameSpace
 					}
 					void writeBuffer(const char *buf, uint32_t len)
 					{
-						moveBuffer();
+				//		std::cerr<<__FUNCTION__<<"("<<__LINE__<<") size :"<<len<<"msg :"<<buf<<std::endl;
+						MyScopeLock lock(mLock);
 						uint32_t remainLen = mBuffer.size() - writePos;
-						if (remainLen < len)
+				//		std::cerr<<__FUNCTION__<<"("<<__LINE__<<") remain size :"<<remainLen<<std::endl;
+						if (remainLen < len + HEAD_LEN)
 						{
-							uint32_t chunkSize = getChunkSize(mBuffer.size() + len - remainLen);
+							moveBuffer();
+							uint32_t chunkSize = getChunkSize(mBuffer.size() + len + HEAD_LEN - remainLen);
+				//			std::cerr<<__FUNCTION__<<"("<<__LINE__<<") chunk size :"<<chunkSize<<std::endl;
 							mBuffer.resize(chunkSize);
 						}
-						memcpy((void *)&mBuffer[writePos], (void *)buf, len);
+						*(uint32_t *)&mBuffer[writePos] = htonl(len);
+						memcpy((void *)&mBuffer[writePos + HEAD_LEN], (void *)buf, len);
+						writePos += len + HEAD_LEN;
 					}
 
+					int readBuffer(std::vector<char> &msg)
+					{
+						MyScopeLock lock(mLock);
+						int len = writePos - readPos;
+						if (0 == len)
+						{
+							return 0;
+						}
+						msg.resize(len);
+						memcpy(&msg[0], &mBuffer[readPos], len);
+						readPos = writePos = 0;
+						return len;
+					}
+
+					/*
 					uint32_t getLen()
 					{
 						return writePos - readPos;	
@@ -125,21 +173,21 @@ namespace MyNameSpace
 					{
 						readPos += d;
 					}
+					*/
 
 				private:
 					void moveBuffer()
 					{
 						uint32_t len =  writePos - readPos;
 						memmove(&mBuffer[0], &mBuffer[readPos], len);
-						if (len > SIZE && mBuffer.capacity() > 2 * len)
-						{
-							mBuffer.resize(len);
-						}
+						readPos = 0;
+						writePos = len;
 					}
 				private:
 					std::vector<char> mBuffer;
 					uint32_t readPos;
 					uint32_t writePos;
+					MyLock mLock;
 			};
 		public:
 		MySocket(int sock = -1);
@@ -147,19 +195,27 @@ namespace MyNameSpace
 		{
 			close(mSock);
 		}
+		/*
 		char *getPtrAndDrift(int & l)
 		{
 			return mRecvBuffer.getPtrAndDrift(l);
 		}
+		*/
 		int rcvBuffer();
 		int sendDataWithBuffer(const char *buf, uint32_t len);
 		int addEpollEvent(int epfd, epoll_event & ev);
 		int delEpollEvent(int epfd, epoll_event & ev);
 		int syncSendBuf();
+		int setSocket(int sock)
+		{
+			mSock = sock;
+		}
+		int readBuffer(std::vector<char> &msg);
 		private:
 		int mSock;
 		RecvBuffer<> mRecvBuffer;
 		SendBuffer<> mSendBuffer;
+		MyLock mLock;
 	};
 }
 #endif

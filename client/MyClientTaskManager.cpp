@@ -29,4 +29,18 @@ namespace MyNameSpace
 			it->second->processMsg();
 		}
 	}
+
+	void MyClientTaskManager::testSend()
+	{
+		std::cout<<"test send"<<std::endl;
+		const char *tmp = "hello world!";
+		MyScopeLock lock(mLock);
+		for (Container_IT it = mTasks.begin(); it != mTasks.end(); ++it)
+		{
+			if (it->second->isConn())
+			{
+				it->second->sendDataWithBuffer(tmp, strlen(tmp));
+			}
+		}
+	}
 }

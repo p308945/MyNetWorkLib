@@ -13,14 +13,14 @@ namespace MyNameSpace
 		bool hasMsg = false;
 		while(true)
 		{
-			int len = 0;
-			char * tmp = mSock.getPtrAndDrift(len);
-			if (NULL == tmp || len == 0)
+			std::vector<char> msg;
+			int len = mSock.readBuffer(msg);
+			if (len == 0)
 			{
 				break;
 			}
 			hasMsg = true;
-			pushMsg(len, tmp);
+			pushMsg(len, &msg[0]);
 		}
 		return hasMsg;
 	}
@@ -83,6 +83,8 @@ namespace MyNameSpace
 			std::cerr<<__FUNCTION__<<"("<<__LINE__<<"): connect fail"<<std::endl;
 			return false;
 		}
+		mConn = true;
+		mSock.setSocket(mSockfd);
 		return true;
 	}
 }

@@ -67,7 +67,7 @@ namespace MyNameSpace
 		void add(MySockClientTask *task)
 		{
 			epoll_event ev;
-			ev.events = EPOLLIN|EPOLLOUT|EPOLLOUT|EPOLLPRI|EPOLLERR;				//EPOLLOUT在此处设置可能有busy loop现象，但是如果不设置会导致后面频繁设置EPOLLOUT，性能未必高，加上run每次有等待时间，所以还是在此处加上
+			ev.events = EPOLLIN|EPOLLOUT|EPOLLPRI|EPOLLERR;				//EPOLLOUT在此处设置可能有busy loop现象，但是如果不设置会导致后面频繁设置EPOLLOUT，性能未必高，加上run每次有等待时间，所以还是在此处加上
 			ev.data.ptr = task;
 			task->addEpollEvent(epfd, ev);
 			taskSet.insert(task);
@@ -75,7 +75,7 @@ namespace MyNameSpace
 		void remove(MySockClientTask *task)
 		{
 			epoll_event ev;
-			ev.events = EPOLLIN|EPOLLOUT|EPOLLOUT|EPOLLPRI|EPOLLERR;
+			ev.events = EPOLLIN|EPOLLOUT|EPOLLPRI|EPOLLERR;
 			task->delEpollEvent(epfd, ev);
 			taskSet.erase(task);
 		}
@@ -148,6 +148,7 @@ namespace MyNameSpace
 				std::set<MySockClientTask *>::iterator iter = taskWillDel.begin();
 				for (; iter != taskWillDel.end(); ++iter)
 				{
+					(*iter)->disConn();
 					mPool->addRecycleThread(*iter);
 				}
 				taskWillDel.clear();

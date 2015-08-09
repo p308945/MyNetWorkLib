@@ -41,6 +41,7 @@ namespace MyNameSpace
 
 	bool MyServer::newTask(int sock)
 	{
+		std::cerr<<__FUNCTION__<<"("<<__LINE__<<"): new task"<<std::endl;
 		++mUniqueId;
 		MyTask *task = new MyTask(sock, mUniqueId);		
 		if (NULL == task)

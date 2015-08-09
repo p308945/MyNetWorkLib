@@ -11,6 +11,8 @@ namespace MyNameSpace
 		public:
 			void pushMsg(int len, char *msg)
 			{
+				std::string str(msg, len);
+				std::cerr<<__FUNCTION__<<":"<<__LINE__<<"size:"<<str.size()<<"str:"<<str<<std::endl;
 				queue.pushMsg(len, msg);
 			}
 			void processMsg()

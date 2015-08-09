@@ -30,6 +30,7 @@ namespace MyNameSpace
 			void addTask(MySockClientTask *task);
 			void removeTask(MySockClientTask *task);
 			bool doProcessMsg();	
+			void testSend();
 		private:
 			typedef std::map<int, MySockClientTask*> Container;
 			typedef std::map<int, MySockClientTask*>::iterator Container_IT;

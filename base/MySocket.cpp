@@ -50,27 +50,47 @@ namespace MyNameSpace
 
 	int MySocket::sendDataWithBuffer(const char *buf, uint32_t len)
 	{
+		std::cerr<<__FUNCTION__<<"("<<__LINE__<<") size :"<<len<<"msg :"<<buf<<std::endl;
 		mSendBuffer.writeBuffer(buf, len);		
 	}
 
 	int MySocket::syncSendBuf()
 	{
+		/*
 		int len = mSendBuffer.getLen();
+		if (len == 0)
+		{
+			return 0;
+		}
 		char * tmp = mSendBuffer.getCurPtr();
-		int l = ::send(mSock, tmp, len, 0);
-		if (l < 0)
+		std::string str(tmp, len);
+		std::cerr<<__FUNCTION__<<"("<<__LINE__<<") size :"<<str.size()<<"msg :"<<str<<std::endl;
+		*/
+		std::vector<char> msg;
+		int len = mSendBuffer.readBuffer(msg);
+		if (0 == len)
 		{
-			if (errno != EINTR)
+			return 0;
+		}
+		int l = len;
+		while(l > 0)
+		{
+			int tmp = ::send(mSock, &msg[0], l, 0);
+			if (tmp < 0)
 			{
-				return -1;
+				if (errno != EINTR)
+				{
+					return -1;
+				}
+				continue;
 			}
-			return 0;
+			l -= tmp;
 		}
-		if (l == 0)
-		{
-			return 0;
-		}
-		mSendBuffer.setDrift(l);
-		return l;
+		return len;
+	}
+
+	int MySocket::readBuffer(std::vector<char> &msg)
+	{
+		return mRecvBuffer.readBuffer(msg);
 	}
 }

@@ -15,7 +15,7 @@ namespace MyNameSpace
 	class MyServer : public MyBaseServer
 	{
 		public:
-			MyServer() : mTaskPool(4, 256), mUniqueId(0)
+			MyServer() : mTaskPool(4, 32), mUniqueId(0)
 			{
 			}
 			virtual bool init(int port);

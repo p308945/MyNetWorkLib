@@ -10,7 +10,7 @@ MySocket.o : ../base/MySocket.cpp ../base/MySocket.h ../base/MyLock.h
 MySockTaskManager.o : ../base/MySockTaskManager.h ../base/MySockTaskManager.cpp
 	g++ -c -g ../base/MySockTaskManager.cpp
 
-MySockTask.o : ../base/MySockTask.cpp ../base/MySockTask.h
+MySockTask.o : ../base/MySockTask.cpp ../base/MySockTask.h ../base/MySocket.h
 	g++ -c -g ../base/MySockTask.cpp 
 
 MyThread.o : ../base/MyThread.cpp ../base/MyThread.h ../base/MyLock.h

@@ -11,6 +11,7 @@ namespace MyNameSpace
 {
 	bool MyClientTask::cmdParse(const char *msg, int len)
 	{
+		std::cout<<"len: "<<len<<"msg: "<<msg<<std::endl;
 		return true;
 	}
 }

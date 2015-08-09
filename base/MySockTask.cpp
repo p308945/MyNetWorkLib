@@ -22,13 +22,16 @@ namespace MyNameSpace
 		while(true)
 		{
 			int len = 0;
-			char * tmp = mSock.getPtrAndDrift(len);
-			if (NULL == tmp || len == 0)
+			std::vector<char> msg;
+			len = mSock.readBuffer(msg);
+			if (len <= 0)
 			{
 				break;
 			}
 			hasMsg = true;
-			pushMsg(len, tmp);
+			std::string str(&msg[0], len);
+			std::cerr<<__FUNCTION__<<"("<<__LINE__<<") size :"<<len<<"str :"<<str<<std::endl;
+			pushMsg(len, &msg[0]);
 		}
 		return hasMsg;
 	}

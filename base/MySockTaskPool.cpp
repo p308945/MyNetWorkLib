@@ -70,7 +70,7 @@ namespace MyNameSpace
 		void add(MySockTask *task)
 		{
 			epoll_event ev;
-			ev.events = EPOLLIN|EPOLLOUT|EPOLLOUT|EPOLLPRI|EPOLLERR;				//EPOLLOUT在此处设置可能有busy loop现象，但是如果不设置会导致后面频繁设置EPOLLOUT，性能未必高，加上run每次有等待时间，所以还是在此处加上
+			ev.events = EPOLLIN|EPOLLOUT|EPOLLPRI|EPOLLERR;				//EPOLLOUT在此处设置可能有busy loop现象，但是如果不设置会导致后面频繁设置EPOLLOUT，性能未必高，加上run每次有等待时间，所以还是在此处加上
 			ev.data.ptr = task;
 			task->addEpollEvent(epfd, ev);
 			taskSet.insert(task);
@@ -78,7 +78,7 @@ namespace MyNameSpace
 		void remove(MySockTask *task)
 		{
 			epoll_event ev;
-			ev.events = EPOLLIN|EPOLLOUT|EPOLLOUT|EPOLLPRI|EPOLLERR;
+			ev.events = EPOLLIN|EPOLLOUT|EPOLLPRI|EPOLLERR;
 			task->delEpollEvent(epfd, ev);
 			taskSet.erase(task);
 		}
@@ -93,7 +93,7 @@ namespace MyNameSpace
 			epfd = epoll_create(maxCount);
 			if (epfd < 0)
 			{
-				std::cerr<<"MyIoThread epoll create failed!"<<std::endl;
+				std::cerr<<__FUNCTION__<<":"<<__LINE__<<" MyIoThread epoll create failed! "<< std::endl;
 				return false;
 			}
 			epev.resize(maxCount);
@@ -211,7 +211,7 @@ namespace MyNameSpace
 				{
 					if (!thread->start())
 					{
-						std::cerr<<"thread start failed"<<std::endl;
+						std::cerr<<__FUNCTION__<<":"<<__LINE__<<"thread start failed! "<< std::endl;
 						delete thread;
 						continue;
 					}
@@ -223,7 +223,7 @@ namespace MyNameSpace
 				}
 			}
 		}
-		std::cerr<<"task add error"<<std::endl;
+		std::cerr<<__FUNCTION__<<":"<<__LINE__<<"task add error! "<< std::endl;
 		return false;
 	}
 
