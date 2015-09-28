@@ -27,6 +27,8 @@ namespace MyNameSpace
 				mComplete = true;
 			}
 			void mainLoop();
+		protected:
+			virtual void initCallBack() {}
 		private:
 			int serverProcess();
 			bool isFini()

@@ -30,7 +30,7 @@ namespace MyNameSpace
 			}
 			hasMsg = true;
 			std::string str(&msg[0], len);
-			std::cerr<<__FUNCTION__<<"("<<__LINE__<<") size :"<<len<<"str :"<<str<<std::endl;
+//			std::cerr<<__FUNCTION__<<"("<<__LINE__<<") size :"<<len<<"str :"<<str<<std::endl;
 			pushMsg(len, &msg[0]);
 		}
 		return hasMsg;

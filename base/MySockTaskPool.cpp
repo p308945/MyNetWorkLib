@@ -242,7 +242,7 @@ namespace MyNameSpace
 		for (int i = 0; i < mIoCount; ++i)
 		{
 			MyIoThread * thread = new MyIoThread(this);
-			if (NULL == thread && thread->init())
+			if (NULL == thread || !thread->init())
 			{
 				delete mRecycleThread;
 				mRecycleThread = NULL;

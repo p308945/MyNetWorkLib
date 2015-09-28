@@ -50,7 +50,7 @@ namespace MyNameSpace
 
 	int MySocket::sendDataWithBuffer(const char *buf, uint32_t len)
 	{
-		std::cerr<<__FUNCTION__<<"("<<__LINE__<<") size :"<<len<<"msg :"<<buf<<std::endl;
+//		std::cerr<<__FUNCTION__<<"("<<__LINE__<<") size :"<<len<<"msg :"<<buf<<std::endl;
 		mSendBuffer.writeBuffer(buf, len);		
 	}
 

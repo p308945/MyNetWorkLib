@@ -7,6 +7,7 @@
 #include "MyBaseServer.h"
 #include <signal.h>
 #include <iostream>
+#include <unistd.h>
 
 namespace MyNameSpace
 {

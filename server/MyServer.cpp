@@ -6,9 +6,9 @@
  ************************************************************************/
 
 #include "MyServer.h"
-#include "../base/MyTask.h"
 #include "../base/MySockTaskManager.h"
 #include "MyServerMsgProcess.h"
+#include "MyServerTask.h"
 
 namespace MyNameSpace
 {
@@ -39,11 +39,16 @@ namespace MyNameSpace
 		return true;
 	}
 
+	void MyServer::initCallBack()
+	{
+//		mDispatcher.regCallback(REQ_LOADBALANCE_CMD,);
+//		mDispatcher.regCallback(RTN_LOADBALANCE_CMD,);
+	}
 	bool MyServer::newTask(int sock)
 	{
 		std::cerr<<__FUNCTION__<<"("<<__LINE__<<"): new task"<<std::endl;
 		++mUniqueId;
-		MyTask *task = new MyTask(sock, mUniqueId);		
+		MyServerTask *task = new MyServerTask(sock, mUniqueId);		
 		if (NULL == task)
 		{
 			std::cerr<<__FUNCTION__<<"("<<__LINE__<<"): new task fail"<<std::endl;

@@ -35,7 +35,7 @@ namespace MyNameSpace
 		while(!isFini())
 		{
 			MyClientTaskManager::getInstance().doProcessMsg();
-			MyClientTaskManager::getInstance().testSend();
+//			MyClientTaskManager::getInstance().testSend();
 			usleep(3 * 1000);
 		}
 	}

@@ -13,6 +13,7 @@ bool> File Name: MySocket.h
 #include <sys/epoll.h>
 #include <memory.h>
 #include "MyLock.h"
+#include <unistd.h>
 
 namespace MyNameSpace
 {
@@ -206,7 +207,7 @@ namespace MyNameSpace
 		int addEpollEvent(int epfd, epoll_event & ev);
 		int delEpollEvent(int epfd, epoll_event & ev);
 		int syncSendBuf();
-		int setSocket(int sock)
+		void setSocket(int sock)
 		{
 			mSock = sock;
 		}
