@@ -26,11 +26,11 @@ namespace MyNameSpace
 {
 	namespace Command
 	{
-		struct ReqLoadBalance : BaseCommand(REQ_LOADBALANCE_CMD)
+		struct ReqLoadBalance : BaseCommand(REQ_LOADBALANCE_CMD, COMMAND_TYPE::OUTTER)
 		{
 
 		};
-		struct RtnLoadBalance : BaseCommand(RTN_LOADBALANCE_CMD)
+		struct RtnLoadBalance : BaseCommand(RTN_LOADBALANCE_CMD, COMMAND_TYPE::INNER)
 		{
 			RtnLoadBalance()
 			{

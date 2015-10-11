@@ -9,26 +9,23 @@
 
 #include "MyBaseServer.h"
 #include "../base/MySockTaskPool.h"
-#include "../base/CmdDispatcher.h"
 
 namespace MyNameSpace
 {
 	class MyServer : public MyBaseServer
 	{
 		public:
-			MyServer() : mTaskPool(4, 32), mUniqueId(0), mDispatcher("MyServer")
+			MyServer() : mTaskPool(4, 32), mUniqueId(0)
 			{
 			}
 			virtual bool init(int port);
 			virtual bool reload();
 			virtual bool newTask(int sock);
 			void fini();
-		private:
-			virtual void initCallBack();
+			void initCallBack();
 		private:
 			MySockTaskPool mTaskPool;
 			uint32_t mUniqueId;
-			Dispatcher mDispatcher;
 	};
 }
 

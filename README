@@ -1,0 +1,4 @@
+1. make && make install
+2. test directory is a complete server
+3. server and client directory have example
+4. lib is a shared library directory

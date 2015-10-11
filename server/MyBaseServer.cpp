@@ -33,9 +33,20 @@ namespace MyNameSpace
 		}
 	}
 	MyBaseServer::Container MyBaseServer::mServerContainer;
+
 	bool MyBaseServer::reload()
 	{
+		return true;
+	}
 
+	void MyBaseServer::regInnerCallBack(uint32_t cmdId, CallBackFunT fun)
+	{
+		mInnerDispatcher.regCallback(cmdId, fun);
+	}
+
+	void MyBaseServer::regOutterCallBack(uint32_t cmdId, CallBackFunT fun)
+	{
+		mOutterDispatcher.regCallback(cmdId, fun);
 	}
 
 	bool MyBaseServer::init(int port)

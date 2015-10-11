@@ -23,12 +23,18 @@ namespace MyNameSpace
 {
 	namespace Command
 	{
+		enum class COMMAND_TYPE : char
+		{
+			INNER,
+			OUTTER
+		};
 		struct BaseCommand
 		{
-			BaseCommand(uint32_t cmdId) : mCmdId(cmdId)
+			BaseCommand(uint32_t cmdId, COMMAND_TYPE type) : mCmdId(cmdId), mType(type)
 			{
 			}
 			uint32_t mCmdId;
+			COMMAND_TYPE mType;			//0 InnerMessage, 1 OutterMessage,也就是服务器内部之间的消息是0，服务器和客户端之间的消息是1
 		};
 	}
 }

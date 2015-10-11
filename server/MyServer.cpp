@@ -38,11 +38,8 @@ namespace MyNameSpace
 		//TODO reload config
 		return true;
 	}
-
 	void MyServer::initCallBack()
 	{
-//		mDispatcher.regCallback(REQ_LOADBALANCE_CMD,);
-//		mDispatcher.regCallback(RTN_LOADBALANCE_CMD,);
 	}
 	bool MyServer::newTask(int sock)
 	{
@@ -69,5 +66,6 @@ namespace MyNameSpace
 	{
 		MyBaseServer::fini();
 		mTaskPool.fini();
+		MyServerMsgProcess::getInstance().terminate();
 	}
 }

@@ -35,15 +35,15 @@ namespace MyNameSpace
 			Dispatcher(const std::string & name) : mName(name){}
 			~Dispatcher(){}
 			const std::string & getName() const { return mName;}
-			void regCallback(uint32_t cmdId, std::function< bool(Command::BaseCommand *, uint32_t) > fun)
+			void regCallback(uint32_t cmdId, std::function< bool(const Command::BaseCommand *, uint32_t) > fun)
 			{
 //				funTable.insert(std::make_pair<uint32_t, std::function<bool <Command::BaseCommand *, uint32_t> > >(cmdId, fun));
 				funTable[cmdId] = fun;
 			}
 
-			bool dispatcher(Command::BaseCommand *cmd, uint32_t cmdLen)
+			bool dispatcher(const Command::BaseCommand *cmd, uint32_t cmdLen)
 			{
-				std::function<bool (Command::BaseCommand *, uint32_t) > fun = funTable[cmd->mCmdId];
+				std::function<bool (const Command::BaseCommand *, uint32_t) > fun = funTable[cmd->mCmdId];
 				if (fun)
 				{
 					return fun(cmd, cmdLen);
@@ -57,7 +57,7 @@ namespace MyNameSpace
 
 		private:
 //			std::unordered_map<uint32_t, std::function< bool(BaseCommand *, uint32_t) > > funTable;
-			std::map<uint32_t, std::function< bool(Command::BaseCommand *, uint32_t) > > funTable;
+			std::map<uint32_t, std::function< bool(const Command::BaseCommand *, uint32_t) > > funTable;
 			std::string mName;
 	};
 }

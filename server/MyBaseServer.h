@@ -10,12 +10,14 @@
 
 #include "MyTcpServer.h"
 #include <vector>
+#include "../base/CmdDispatcher.h"
 namespace MyNameSpace
 {
 	class MyBaseServer
 	{
+		using CallBackFunT = std::function< bool(const Command::BaseCommand *, uint32_t)>;
 		public:
-			MyBaseServer() : mComplete(false)
+			MyBaseServer() : mComplete(false), mInnerDispatcher("InnerDispatcher"), mOutterDispatcher("OutterDispatcher")
 			{
 
 			}
@@ -28,7 +30,8 @@ namespace MyNameSpace
 			}
 			void mainLoop();
 		protected:
-			virtual void initCallBack() {}
+			virtual void regInnerCallBack(uint32_t cmdId, CallBackFunT fun);	//内部消息分发器，也就是服务器之间的消息
+			virtual void regOutterCallBack(uint32_t cmdId, CallBackFunT fun); //外部消息分发器，也就是服务端客户端之间的消息
 		private:
 			int serverProcess();
 			bool isFini()
@@ -42,6 +45,9 @@ namespace MyNameSpace
 		private:
 			bool mComplete;
 			MyTcpServer mTcpServer;
+		protected:
+			Dispatcher mInnerDispatcher;
+			Dispatcher mOutterDispatcher;
 	};
 }
 #endif

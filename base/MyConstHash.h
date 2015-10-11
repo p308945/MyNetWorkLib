@@ -102,8 +102,13 @@ namespace MyNameSpace
 			public:
 				static const uint32_t VIRTUAL_NODE_COUNT = 50;
 			private:
+				/*
 				typedef std::map<uint32_t, std::shared_ptr<VirtualNode<T>>> VirtualNodeType;
 				typedef std::map<std::string, std::shared_ptr<RealNode<T>>> RealNodeType;
+				*/
+
+				using VirtualNodeType = std::map<uint32_t, std::shared_ptr<VirtualNode<T>>>;
+				using RealNodeType = std::map<std::string, std::shared_ptr<RealNode<T>>>;
 				RealNodeType mRealNodeMap;
 				VirtualNodeType mVirtualNodeMap;
 				HashFunction mHashFun;
