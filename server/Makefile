@@ -46,5 +46,6 @@ ConnectionLoadBalance.o : ConnectionLoadBalance.h ConnectionLoadBalance.cpp
 	g++  $(CXXFLAGS) -c ConnectionLoadBalance.cpp ../base/MyConstHash.h
 clean:
 	rm -rf test test.o MySockTaskPool.o MySocket.o MySockTask.o MyThread.o MyTcpServer.o MyBaseServer.o MyServerTask.o MyServer.o MyTask.o MySockTaskManager.o MyServerMsgProcess.o libhyServer.so MyHashFunction.o ConnectionLoadBalance.o MyHashFunction.o
+	rm -rf ../lib/libhyServer.so
 install:
 	cp libhyServer.so ../lib

@@ -46,5 +46,6 @@ MyClient.o : MyClient.cpp MyClient.h
 	g++ $(CXXFLAGS) -c MyClient.cpp
 clean:
 	rm -rf test test.o MySockTaskPool.o MySocket.o MySockTask.o MyThread.o MyTask.o MySockTaskManager.o MySockClientTask.o MyTcpClient.o MySockClientTaskPool.o MyClientTaskManager.o MyClient.o MyClientTask.o libhyClient.so
+	rm -rf ../lib/libhyClient.so
 install:
 	cp libhyClient.so ../lib
