@@ -14,7 +14,7 @@ namespace MyNameSpace
 	class MySockClientTask : public MyQueue
 	{
 		public:
-			MySockClientTask(int id, int ip, int port) :mId(id), mIp(ip), mPort(port), mSockfd(-1), mConn(false)
+			MySockClientTask(int id, int ip, int port, int serverId, int serverType) :mId(id), mIp(ip), mPort(port), mSockfd(-1), mConn(false), mServerId(serverId), mServerType(serverType)
 			{
 
 			}
@@ -37,6 +37,10 @@ namespace MyNameSpace
 			{
 				mConn = false;
 			}
+			int getType()
+			{
+				return mServerType;
+			}
 		private:
 			MySocket mSock;
 			int mId;
@@ -44,6 +48,8 @@ namespace MyNameSpace
 			int mPort;
 			int mSockfd;
 			bool mConn;
+			int mServerId;
+			int mServerType;
 	};
 }
 #endif

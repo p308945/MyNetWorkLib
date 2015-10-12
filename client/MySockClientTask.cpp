@@ -74,13 +74,13 @@ namespace MyNameSpace
 		sockaddr_in addr;
 		bzero(&addr, sizeof(addr));
 		addr.sin_family = AF_INET;
-		addr.sin_addr.s_addr = htonl(mIp);
+		addr.sin_addr.s_addr = mIp;
 		addr.sin_port = htons(mPort);
 
 		ret = ::connect(mSockfd, (const sockaddr *)&addr, sizeof(addr));
 		if (0 != ret)
 		{
-			std::cerr<<__FUNCTION__<<"("<<__LINE__<<"): connect fail"<<std::endl;
+			std::cerr<<__FUNCTION__<<"("<<__LINE__<<") ip :"<<mIp<<"port: "<<mPort <<" connect fail"<<std::endl;
 			return false;
 		}
 		mConn = true;

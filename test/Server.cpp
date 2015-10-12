@@ -23,6 +23,7 @@
 #include "MyServerMsgProcess.h"
 #include "MyServerTask.h"
 #include "MyThread.h"
+#include "XmlconfigParse.h"
 
 namespace MyNameSpace
 {
@@ -76,6 +77,12 @@ namespace MyNameSpace
 			std::cerr<<__FUNCTION__<<"("<<__LINE__<<"): ServerMsgProcess start fail"<<std::endl;
 			return false;
 		}
+		XmlConfig::loadClientConfig("configure/clientAddress.xml", clientInfoList);
+		for (auto iter : clientInfoList)
+		{
+			std::cout<<"ip: "<<iter.ip<<" id: "<<iter.id<<" port: "<<iter.port<<" type: "<<iter.type<<std::endl;
+			newClient(iter.ip.c_str(), iter.port, iter.id, iter.type);
+		}
 		return true;
 
 	}
@@ -109,9 +116,9 @@ namespace MyNameSpace
 		return true;
 	}
 
-	bool Server::newClient(const char* ip, unsigned short port)
+	bool Server::newClient(const char* ip, unsigned short port ,int serverId, int serverType)
 	{
-		MyClientTask *task = new MyClientTask(mClientUniqueId, inet_addr(ip), port, &mInnerDispatcher, &mOutterDispatcher);
+		MyClientTask *task = new MyClientTask(mClientUniqueId, inet_addr(ip), port, serverId, serverType, &mInnerDispatcher, &mOutterDispatcher);
 		if (NULL != task)
 		{
 			++mClientUniqueId;

@@ -15,11 +15,11 @@ namespace MyNameSpace
 	{
 		public:
 			virtual bool cmdParse(const char *msg, int len);
-			MyClientTask(int id, int ip, int port) : MySockClientTask(id, ip, port)
+			MyClientTask(int id, int ip, int port) : MySockClientTask(id, ip, port, 0, 0)
 		{
 
 		}
-			MyClientTask(int id, int ip, int port, Dispatcher *iDispatcher, Dispatcher *oDispatcher) : MySockClientTask(id, ip, port), mInnerDispatcher(iDispatcher), mOutterDispatcher(oDispatcher)
+			MyClientTask(int id, int ip, int port, int serverId, int serverType, Dispatcher *iDispatcher, Dispatcher *oDispatcher) : MySockClientTask(id, ip, port, serverId, serverType), mInnerDispatcher(iDispatcher), mOutterDispatcher(oDispatcher)
 		{
 
 		}

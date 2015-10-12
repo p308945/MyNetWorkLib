@@ -23,9 +23,11 @@
 #include "MySockTaskPool.h"
 #include "CmdDispatcher.h"
 #include "MySockClientTaskPool.h"
+#include "types.h"
 
 namespace MyNameSpace
 {
+
 	class Server : public MyBaseServer
 	{
 		public:
@@ -36,13 +38,14 @@ namespace MyNameSpace
 			virtual bool reload();
 			virtual bool newTask(int sock);	//connection from remote
 			void fini();
-			bool newClient(const char *ip, unsigned short port); //connect to remote
+			bool newClient(const char *ip, unsigned short port, int serverId, int serverType); //connect to remote
 			void initCallBack();
 		private:
 			MySockTaskPool mServerTaskPool;
 			MySockClientTaskPool mClientTaskPool;
 			uint32_t mServerUniqueId;
 			uint32_t mClientUniqueId;
+			ClientInfoList clientInfoList;
 	};
 }
 #endif
