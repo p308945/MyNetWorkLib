@@ -104,7 +104,7 @@ namespace MyNameSpace
 						{
 							return -1;
 						}
-						uint32_t len = ntohl(*(uint32_t *)&mBuffer[readPos]);
+						uint32_t len = *(uint32_t *)&mBuffer[readPos];
 						if ((writePos - readPos) < len + HEAD_LEN)		//数据未收集满
 						{
 							return -1;

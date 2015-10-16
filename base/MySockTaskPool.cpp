@@ -153,6 +153,7 @@ namespace MyNameSpace
 				}
 				taskWillDel.clear();
 			}
+			usleep(5000);
 		}
 	}
 
