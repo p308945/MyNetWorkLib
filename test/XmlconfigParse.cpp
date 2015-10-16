@@ -62,6 +62,7 @@ namespace MyNameSpace
 				printf("get extranet connect ip and port from config file failed\n");
 				exit(1);
 			}
+			return true;
 		}
 	}
 }

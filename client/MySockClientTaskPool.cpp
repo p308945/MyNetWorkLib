@@ -52,7 +52,7 @@ namespace MyNameSpace
 	class MyClientIoThread : public MyThread, public ClientTaskQueue
 	{
 		public:
-		MyClientIoThread(MySockClientTaskPool *pool, bool j = true) : mPool(pool), MyThread(j)
+		MyClientIoThread(MySockClientTaskPool *pool, bool j = true) : MyThread(j), mPool(pool)
 		{
 			epfd = -1;
 		}
@@ -159,7 +159,7 @@ namespace MyNameSpace
 	class MyClientRecycleThread : public MyThread, public ClientTaskQueue
 	{
 		public:
-		MyClientRecycleThread(MySockClientTaskPool *pool, bool j = true) : mPool(pool), MyThread(j)
+		MyClientRecycleThread(MySockClientTaskPool *pool, bool j = true) : MyThread(j), mPool(pool)
 		{
 		}
 		void run();
@@ -208,6 +208,7 @@ namespace MyNameSpace
 	bool MySockClientTaskPool::addTask(MySockClientTask * task)
 	{
 		mRecycleThread->addTask(task);
+		return true;
 	}
 
 	void MySockClientTaskPool::addIoThread(MySockClientTask * task)

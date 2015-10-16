@@ -59,7 +59,7 @@ namespace MyNameSpace
 			std::cerr<<__FUNCTION__<<"("<<__LINE__<<"): add task fail"<<std::endl;
 			return false;
 		}
-		
+		return true;	
 	}
 
 	void MyServer::fini()

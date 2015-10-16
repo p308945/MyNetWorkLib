@@ -55,7 +55,7 @@ namespace MyNameSpace
 	class MyIoThread : public MyThread, public TaskQueue
 	{
 		public:
-		MyIoThread(MySockTaskPool *pool, bool j = true) : mPool(pool), MyThread(j)
+		MyIoThread(MySockTaskPool *pool, bool j = true) : MyThread(j), mPool(pool)
 		{
 			epfd = -1;
 		}
@@ -159,7 +159,7 @@ namespace MyNameSpace
 	class MyRecycleThread : public MyThread, public TaskQueue
 	{
 		public:
-		MyRecycleThread(MySockTaskPool *pool, bool j = true) : mPool(pool), MyThread(j)
+		MyRecycleThread(MySockTaskPool *pool, bool j = true) : MyThread(j), mPool(pool)
 		{
 		}
 		void run();

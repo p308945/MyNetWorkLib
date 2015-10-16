@@ -22,6 +22,7 @@ namespace MyNameSpace
 		p->notifyStartSuccess();
 		std::cerr<<__FUNCTION__<<":"<<__LINE__<<" thread "<< "start!"<<std::endl;
 		p->run();
+		return NULL;
 	}
 	bool MyThread::start()
 	{

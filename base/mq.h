@@ -30,7 +30,9 @@ namespace MyNameSpace
 							msgQueue[writePos].second.first = len;
 							msgQueue[writePos].second.second = buf;
 							msgQueue[writePos].first = true;
-							writePos = ++writePos % QUEUE_SIZE;
+//							writePos = ++writePos % QUEUE_SIZE;
+							++writePos;
+							writePos %= QUEUE_SIZE;
 						}
 						else
 						{
@@ -63,7 +65,9 @@ namespace MyNameSpace
 					{
 						delete [] msgQueue[readPos].second.second;
 						msgQueue[readPos].first = false;
-						readPos = ++readPos % QUEUE_SIZE;
+//						readPos = ++readPos % QUEUE_SIZE;
+						++readPos;
+						readPos %= QUEUE_SIZE;
 					}
 					else
 					{
@@ -72,7 +76,9 @@ namespace MyNameSpace
 						{
 							delete[] msgQueue[readPos].second.second;
 							msgQueue[readPos].first = false;
-							readPos = ++readPos % QUEUE_SIZE;
+//							readPos = ++readPos % QUEUE_SIZE;
+							++readPos;
+							readPos %= QUEUE_SIZE;
 						}
 					}
 				}
@@ -85,7 +91,9 @@ namespace MyNameSpace
 							MsgPair tmp = cacheQueue.front();
 							msgQueue[writePos].second = tmp;
 							msgQueue[writePos].first = true;
-							writePos = ++writePos % QUEUE_SIZE;
+//							writePos = ++writePos % QUEUE_SIZE;
+							++writePos;
+							writePos %= QUEUE_SIZE;
 							cacheQueue.pop();
 						}
 						else

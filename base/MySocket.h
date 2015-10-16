@@ -39,7 +39,7 @@ namespace MyNameSpace
 						mBuffer.resize(SIZE);
 						readPos = writePos = 0;
 					}
-					void writeBuffer(const char *buf, uint32_t len)
+					int writeBuffer(const char *buf, uint32_t len)
 					{
 						MyScopeLock lock(mLock);
 						std::string str(buf, len);
@@ -54,6 +54,7 @@ namespace MyNameSpace
 						}
 						memcpy((void *)&mBuffer[writePos], (void *)buf, len);
 						writePos += len;
+						return len;
 					}
 
 					int readBuffer(std::vector<char> &msg)
@@ -127,7 +128,7 @@ namespace MyNameSpace
 						mBuffer.resize(SIZE);
 						readPos = writePos = 0;
 					}
-					void writeBuffer(const char *buf, uint32_t len)
+					int writeBuffer(const char *buf, uint32_t len)
 					{
 				//		std::cerr<<__FUNCTION__<<"("<<__LINE__<<") size :"<<len<<"msg :"<<buf<<std::endl;
 						MyScopeLock lock(mLock);
@@ -143,6 +144,7 @@ namespace MyNameSpace
 						*(uint32_t *)&mBuffer[writePos] = htonl(len);
 						memcpy((void *)&mBuffer[writePos + HEAD_LEN], (void *)buf, len);
 						writePos += len + HEAD_LEN;
+						return len + HEAD_LEN;
 					}
 
 					int readBuffer(std::vector<char> &msg)

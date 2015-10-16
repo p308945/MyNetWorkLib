@@ -28,6 +28,18 @@ namespace MyNameSpace
 		{
 			it->second->processMsg();
 		}
+		return true;
+	}
+
+	MySockClientTask * MyClientTaskManager::getTaskById(int id)
+	{
+		Container_IT it;
+		it = mTasks.find(id);
+		if (mTasks.end() == it)
+		{
+			return NULL;
+		}
+		return it->second;
 	}
 
 	void MyClientTaskManager::testSend()

@@ -1,4 +1,4 @@
-CXXFLAGS=-Wall -std=c++11 -g -gstabs -Wparentheses
+CXXFLAGS=-Wall -std=c++11 -g -Wparentheses -Wsequence-point
 LIBFLAGS=-fPIC -shared
 .PHONY : all
 all : test libhyServer.so

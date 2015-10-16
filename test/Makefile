@@ -1,4 +1,4 @@
-CXXFLAGS=-Wall -std=c++11 -g -gstabs -Wparentheses -Wl,-rpath,../lib
+CXXFLAGS=-Wall -std=c++11 -g -Wparentheses -Wl,-rpath,../lib
 INCLUDE= -I../base -I../server -I../client -I../lib/tinyxml
 LDFLAGS= -L../lib -lhyServer -L../lib -lhyClient -L../lib/tinyxml -ltinyxml
 .PHONY : all

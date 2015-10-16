@@ -28,5 +28,6 @@ namespace MyNameSpace
 		{
 			it->second->processMsg();
 		}
+		return true;
 	}
 }

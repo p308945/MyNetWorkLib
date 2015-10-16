@@ -19,6 +19,7 @@ namespace MyNameSpace
 	{
 		public:
 			MyThread(bool j = false);
+			virtual ~MyThread() {}
 			bool start();
 			static void* threadFun(void *);
 			virtual void run() = 0;

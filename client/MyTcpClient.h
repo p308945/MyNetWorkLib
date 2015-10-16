@@ -13,7 +13,7 @@ namespace MyNameSpace
 	{
 		public:
 			MyTcpClient(int ip, int port, int reconn) : 
-				mIp(ip), mPort(port), mReconn(reconn), mSock(-1)
+				mIp(ip), mPort(port), mSock(-1), mReconn(reconn)
 			{
 			}
 			~MyTcpClient();

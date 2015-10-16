@@ -19,7 +19,7 @@ namespace MyNameSpace
 			{
 				MsgPair *tmp = NULL;
 				int i = 0;
-				while (tmp = queue.getMsg())
+				while (NULL != (tmp = queue.getMsg()))
 				{
 					cmdParse(tmp->second, tmp->first);
 					queue.pop();
