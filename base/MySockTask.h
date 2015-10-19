@@ -17,7 +17,7 @@ namespace MyNameSpace
 		public:
 			MySockTask(int sock, int id);
 			virtual ~MySockTask() {}
-			bool getMsg();
+			int getMsg();
 			int rcvBuffer();
 			int sendDataWithBuffer(const char *buf, uint32_t len);
 			int addEpollEvent(int epfd, epoll_event & ev);

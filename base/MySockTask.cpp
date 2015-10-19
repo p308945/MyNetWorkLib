@@ -16,9 +16,9 @@ namespace MyNameSpace
 	{
 	}
 
-	bool MySockTask::getMsg()
+	int MySockTask::getMsg()
 	{
-		bool hasMsg = false;
+		int msgCount = 0;
 		while(true)
 		{
 			int len = 0;
@@ -26,14 +26,18 @@ namespace MyNameSpace
 			len = mSock.readBuffer(msg);
 			if (len <= 0)
 			{
+				if (len < 0)
+				{
+					msgCount = -1;
+				}
 				break;
 			}
-			hasMsg = true;
+			++msgCount;
 			std::string str(&msg[0], len);
-//			std::cerr<<__FUNCTION__<<"("<<__LINE__<<") size :"<<len<<"str :"<<str<<std::endl;
+//std::cerr<<__FUNCTION__<<"("<<__LINE__<<") size :"<<len<<"str :"<<str<<std::endl;
 			pushMsg(len, &msg[0]);
 		}
-		return hasMsg;
+		return msgCount;
 	}
 
 	int MySockTask::rcvBuffer()

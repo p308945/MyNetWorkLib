@@ -97,8 +97,9 @@ namespace MyNameSpace
 	}
 	bool Server::newTask(int sock)
 	{
-		std::cerr<<__FUNCTION__<<"("<<__LINE__<<"): new task"<<std::endl;
-		MyServerTask *task = new MyServerTask(sock, mServerUniqueId);		
+		std::cout<<__FUNCTION__<<"("<<__LINE__<<"): new task"<<std::endl;
+
+		MyServerTask *task = new MyServerTask(sock, mServerUniqueId, &mInnerDispatcher, &mOutterDispatcher);
 		if (NULL == task)
 		{
 			std::cerr<<__FUNCTION__<<"("<<__LINE__<<"): new task fail"<<std::endl;

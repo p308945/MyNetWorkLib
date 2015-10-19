@@ -23,11 +23,14 @@ namespace MyNameSpace
 {
 	bool MyServerTask::cmdParse(const char *msg, int len)
 	{
-		std::cout<<"xxx"<<msg<<std::endl;
 //		mDispatcher.dispatch(msg, len);
 		if (mInnerDispatcher && mOutterDispatcher)
 		{
 			const Command::BaseCommand *pCmd = reinterpret_cast<const Command::BaseCommand *>(msg);
+//			std::cerr<<len<<" : "<<sizeof (pCmd->mCmdId)<<" : "<<sizeof(pCmd->mType)<<" : "<<len - (sizeof (pCmd->mCmdId) + sizeof(pCmd->mType))<<std::endl;
+			std::string test(pCmd->data, len - (sizeof (pCmd->mCmdId) + sizeof(pCmd->mType)));
+//			std::cout<<"msg: "<<msg<<" Id:"<<pCmd->mCmdId<<" type: "<<(char)pCmd->mType<<" data: "<<pCmd->data<<" len: "<<len<<std::endl;
+			std::cout<<"msg: "<<msg<<" Id:"<<pCmd->mCmdId<<" type: "<<(char)pCmd->mType<<" data: "<<test<<" len: "<<len<<std::endl;
 			switch(pCmd->mType)
 			{
 				case Command::COMMAND_TYPE::INNER:
@@ -42,7 +45,7 @@ namespace MyNameSpace
 					break;
 				default:
 					{
-						std::cerr<<__FUNCTION__<<": "<<__LINE__<<"type "<<(int)pCmd->mType<<" error"<<std::endl;
+						std::cerr<<"file: "<<__FILE__<<" function: "<<__FUNCTION__<<" line: "<<__LINE__<<" Id: "<<pCmd->mCmdId<<" error"<<std::endl;
 						return false;
 					}
 					break;

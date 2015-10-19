@@ -21,6 +21,7 @@ namespace MyNameSpace
 	const int BIGM = 32 * 1024;
 	const int CHUNK = 32 * 1024;
 	const int HEAD_LEN = sizeof(uint32_t);
+	const int MAX_PACKET_LEN = 64 * 1024;
 	namespace
 	{
 		uint32_t getChunkSize(uint32_t size)
@@ -66,9 +67,15 @@ namespace MyNameSpace
 //							std::cerr<<__FUNCTION__<<"("<<__LINE__<<") no completePacket len :"<<len<<std::endl;
 							return 0;
 						}
+						//包超出最大限制，数据出错，断开连接处理
+						else if (len >= MAX_PACKET_LEN)
+						{
+							std::cerr<<__FUNCTION__<<"("<<__LINE__<<") packet size :"<<len<<" > "<<MAX_PACKET_LEN<<std::endl;
+							return -1;
+						}
 						msg.resize(len);
 						memcpy(&msg[0], &mBuffer[readPos + HEAD_LEN], len);
-						std::string str(&msg[0], len);
+//						std::string str(&msg[0], len);
 //						std::cerr<<__FUNCTION__<<"("<<__LINE__<<") len :"<<len<<"str:"<<str<<std::endl;
 						readPos += (len + HEAD_LEN);
 						return len;
@@ -105,6 +112,10 @@ namespace MyNameSpace
 							return -1;
 						}
 						uint32_t len = *(uint32_t *)&mBuffer[readPos];
+						if (len >= MAX_PACKET_LEN)
+						{
+							return MAX_PACKET_LEN;
+						}
 						if ((writePos - readPos) < len + HEAD_LEN)		//数据未收集满
 						{
 							return -1;

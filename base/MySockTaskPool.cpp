@@ -127,7 +127,11 @@ namespace MyNameSpace
 					{
 						taskWillDel.insert(task);
 					}
-					task->getMsg();
+					int getMsgRet = task->getMsg();
+					if (getMsgRet < 0)
+					{
+						taskWillDel.insert(task);
+					}
 				}
 				else if (epev[i].events&EPOLLOUT)
 				{
@@ -150,6 +154,7 @@ namespace MyNameSpace
 				for (; iter != taskWillDel.end(); ++iter)
 				{
 					mPool->addRecycleThread(*iter);
+					remove(*iter);
 				}
 				taskWillDel.clear();
 			}
