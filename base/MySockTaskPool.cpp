@@ -192,8 +192,11 @@ namespace MyNameSpace
 				std::set<MySockTask *>::iterator iter = taskSet.begin();
 				for (; iter != taskSet.end(); ++iter)
 				{
-					MySockTaskManager::getInstance().removeTask(*iter);
-					delete *iter;
+					if (NULL != *iter)
+					{
+						MySockTaskManager::getInstance().removeTask(*iter);
+						delete *iter;
+					}
 				}
 				taskSet.clear();
 			}

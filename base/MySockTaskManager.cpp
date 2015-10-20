@@ -30,4 +30,28 @@ namespace MyNameSpace
 		}
 		return true;
 	}
+
+	MySockTask* MySockTaskManager::getTaskByIdWithOutLock(int id)
+	{
+		Container_IT it;
+		//		MyScopeLock lock(mLock);
+		it = mTasks.find(id);
+		if (mTasks.end() == it)
+		{
+			return NULL;
+		}
+		return it->second;
+	}
+
+	MySockTask* MySockTaskManager::getTaskByIdWithLock(int id)
+	{
+		Container_IT it;
+		MyScopeLock lock(mLock);
+		it = mTasks.find(id);
+		if (mTasks.end() == it)
+		{
+			return NULL;
+		}
+		return it->second;
+	}
 }

@@ -24,6 +24,7 @@
 #include "MyServerTask.h"
 #include "MyThread.h"
 #include "XmlconfigParse.h"
+#include "CmdNumber.h"
 
 namespace MyNameSpace
 {
@@ -83,21 +84,23 @@ namespace MyNameSpace
 			std::cout<<"ip: "<<iter.ip<<" id: "<<iter.id<<" port: "<<iter.port<<" type: "<<iter.type<<std::endl;
 			newClient(iter.ip.c_str(), iter.port, iter.id, iter.type);
 		}
+		initCallBack();
 		return true;
 
 	}
 	bool Server::reload()
 	{
-
 		//TODO reload config
 		return true;
 	}
 	void Server::initCallBack()
 	{
+		regOutterCallBack(Command::REQ_LOGIN_CMD, std::bind(&LoginProcess::ReqLogin, &loginProcess, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	}
 	bool Server::newTask(int sock)
 	{
-		std::cout<<__FUNCTION__<<"("<<__LINE__<<"): new task"<<std::endl;
+//		std::cout<<__FUNCTION__<<"("<<__LINE__<<"): new task"<<std::endl;
+		std::cout<<"new task, id :"<<mServerUniqueId<<std::endl;
 
 		MyServerTask *task = new MyServerTask(sock, mServerUniqueId, &mInnerDispatcher, &mOutterDispatcher);
 		if (NULL == task)

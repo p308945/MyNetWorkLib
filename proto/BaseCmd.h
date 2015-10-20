@@ -19,7 +19,9 @@
 #ifndef __BASECMD_H_
 #define __BASECMD_H_
 
-#pragma pack(1)
+#include <cstdint>
+
+//#pragma pack(1)
 
 namespace MyNameSpace
 {
@@ -37,7 +39,6 @@ namespace MyNameSpace
 			}
 			uint32_t mCmdId;
 			COMMAND_TYPE mType;			//0 InnerMessage, 1 OutterMessage,也就是服务器内部之间的消息是0，服务器和客户端之间的消息是1
-			char data[0];
 		}__attribute__ ((packed));
 	}
 }

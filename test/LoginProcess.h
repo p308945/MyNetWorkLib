@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  LoadBalanceCmd.h
+ *       Filename:  LoginProcess.h
  *
- *    Description:  command Number file
+ *    Description:  Login Process
  *
  *        Version:  1.0
- *        Created:  09/28/2015 11:42:07 AM
+ *        Created:  10/20/2015 10:46:40 AM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -16,20 +16,20 @@
  * =====================================================================================
  */
 
-#ifndef __CMDNUMBER_H_
-#define __CMDNUMBER_H_
 
-#include <stdint.h>
-
+#ifndef __LOGINPROCESS_H_
+#define __LOGINPROCESS_H_
+#include "BaseCmd.h"
 namespace MyNameSpace
 {
-	namespace Command
+	class LoginProcess
 	{
-		const uint32_t REQ_LOGIN_CMD = 1;
-		const uint32_t RTN_LOGIN_CMD = 2;
-		const uint32_t REQ_LOADBALANCE_CMD = 3;
-		const uint32_t RTN_LOADBALANCE_CMD = 4;
-	}
-}
+		public:
+			LoginProcess() {}
+			~LoginProcess() {}
+		public:
+			bool ReqLogin(const Command::BaseCommand *cmd, uint32_t len, int taskId);
 
+	};
 #endif
+}

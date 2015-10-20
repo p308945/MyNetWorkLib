@@ -20,12 +20,12 @@ namespace MyNameSpace
 			{
 				case Command::COMMAND_TYPE::INNER:
 					{
-						mInnerDispatcher->dispatcher(pCmd, len);
+						mInnerDispatcher->dispatcher(pCmd, len, getId());
 					}
 					break;
 				case Command::COMMAND_TYPE::OUTTER:
 					{
-						mOutterDispatcher->dispatcher(pCmd, len);
+						mOutterDispatcher->dispatcher(pCmd, len, getId());
 					}
 					break;
 				default:
