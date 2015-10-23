@@ -28,7 +28,7 @@ namespace MyNameSpace
 		{
 			const Command::BaseCommand *pCmd = reinterpret_cast<const Command::BaseCommand *>(msg);
 //			std::cout<<"msg: "<<msg<<" Id:"<<pCmd->mCmdId<<" type: "<<(char)pCmd->mType<<" data: "<<pCmd->data<<" len: "<<len<<std::endl;
-			std::cout<<"msg: "<<msg<<" Id:"<<pCmd->mCmdId<<" type: "<<(char)pCmd->mType<<" len: "<<len<<std::endl;
+//			std::cout<<"msg: "<<msg<<" Id:"<<pCmd->mCmdId<<" type: "<<(char)pCmd->mType<<" len: "<<len<<std::endl;
 			switch(pCmd->mType)
 			{
 				case Command::COMMAND_TYPE::INNER:

@@ -31,7 +31,7 @@ namespace MyNameSpace
 		{
 			ReqLogin() : BaseCommand(REQ_LOGIN_CMD, COMMAND_TYPE::OUTTER)
 			{
-				memset(this, 0x0, sizeof(*this));
+				memset(account, 0x0, sizeof(account));
 			}
 			char account[MAX_ACCOUNT_LEN];
 		}__attribute__ ((packed));
@@ -41,8 +41,10 @@ namespace MyNameSpace
 			RtnLogin() : BaseCommand(RTN_LOGIN_CMD, COMMAND_TYPE::OUTTER)
 			{
 				res = 0;
+				memset(account, 0x0, sizeof(account));
 			}
 			int res;
+			char account[MAX_ACCOUNT_LEN];
 		}__attribute__ ((packed));
 	}
 }

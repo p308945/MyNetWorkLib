@@ -51,7 +51,7 @@ namespace MyNameSpace
 					}
 					else
 					{
-						processCache();
+//						processCache();		maybe multithread
 						if (msgQueue[readPos].first)
 						{
 							ret = &msgQueue[readPos].second;

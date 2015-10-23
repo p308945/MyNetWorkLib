@@ -152,7 +152,7 @@ namespace MyNameSpace
 				//			std::cerr<<__FUNCTION__<<"("<<__LINE__<<") chunk size :"<<chunkSize<<std::endl;
 							mBuffer.resize(chunkSize);
 						}
-						*(uint32_t *)&mBuffer[writePos] = htonl(len);
+						*(uint32_t *)&mBuffer[writePos] = len;
 						memcpy((void *)&mBuffer[writePos + HEAD_LEN], (void *)buf, len);
 						writePos += len + HEAD_LEN;
 						return len + HEAD_LEN;
@@ -207,7 +207,7 @@ namespace MyNameSpace
 		MySocket(int sock = -1);
 		~MySocket()
 		{
-			close(mSock);
+			::close(mSock);
 		}
 		/*
 		char *getPtrAndDrift(int & l)

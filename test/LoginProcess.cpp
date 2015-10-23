@@ -30,9 +30,12 @@ namespace MyNameSpace
 		std::cout<<taskId<<std::endl;
 		if (NULL != task)
 		{
+			const Command::ReqLogin *rcv = static_cast<const Command::ReqLogin *>(cmd);
+			std::cout<<"login account: "<<rcv->account<<std::endl;
 			Command::RtnLogin rtn;
 			rtn.res = 1;
-			std::cout<<"return message! len:"<<sizeof(rtn)<<std::endl;
+			strncpy(rtn.account, rcv->account, sizeof(rtn.account));
+			std::cout<<"return message! len:"<<sizeof(rtn)<<" account :"<<rtn.account<<std::endl;
 			task->sendDataWithBuffer(reinterpret_cast<const char *>(&rtn), sizeof(rtn));
 		}
 		return true;

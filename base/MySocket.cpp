@@ -75,10 +75,11 @@ namespace MyNameSpace
 		int l = len;
 		while(l > 0)
 		{
+//			std::cout<<"send buf:"<<l<<std::endl;
 			int tmp = ::send(mSock, &msg[0], l, 0);
 			if (tmp < 0)
 			{
-				if (errno != EINTR)
+				if (errno != EINTR && errno != EAGAIN)
 				{
 					return -1;
 				}
