@@ -220,6 +220,8 @@ namespace MyNameSpace
 		int addEpollEvent(int epfd, epoll_event & ev);
 		int delEpollEvent(int epfd, epoll_event & ev);
 		int syncSendBuf();
+		uint16_t getRemotePort();
+		std::string getRemoteIp();
 		void setSocket(int sock)
 		{
 			mSock = sock;

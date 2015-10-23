@@ -94,4 +94,29 @@ namespace MyNameSpace
 	{
 		return mRecvBuffer.readBuffer(msg);
 	}
+
+	uint16_t MySocket::getRemotePort()
+	{
+		sockaddr_in s;
+		socklen_t len;
+		len = sizeof(s);
+		uint16_t port = 0;
+		if ( 0 == getpeername(mSock, (sockaddr*)&s, &len))
+		{
+			port = ntohs(s.sin_port);
+		}
+		return port;
+	}
+	std::string MySocket::getRemoteIp()
+	{
+		sockaddr_in s;
+		socklen_t len;
+		std::string ip;
+		len = sizeof(s);
+		if ( 0 == getpeername(mSock, (sockaddr*)&s, &len))
+		{
+			ip= ::inet_ntoa(s.sin_addr);
+		}
+		return ip;
+	}
 }
