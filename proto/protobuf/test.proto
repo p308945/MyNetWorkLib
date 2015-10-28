@@ -1,0 +1,11 @@
+package MyProtoBuf;
+
+message CMsgLoginReq
+{
+	required string account = 1;
+}
+
+message CMsgLoginRtn
+{
+    required int32 ret = 1;
+}

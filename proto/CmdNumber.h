@@ -25,10 +25,19 @@ namespace MyNameSpace
 {
 	namespace Command
 	{
-		const uint32_t REQ_LOGIN_CMD = 1;
-		const uint32_t RTN_LOGIN_CMD = 2;
-		const uint32_t REQ_LOADBALANCE_CMD = 3;
-		const uint32_t RTN_LOADBALANCE_CMD = 4;
+		namespace OutterCommand
+		{
+			const uint32_t REQ_LOGIN_CMD = 1;
+			const uint32_t RTN_LOGIN_CMD = 2;
+			const uint32_t TEST_PROTO_BUF = 3;
+			const uint32_t TEST_PROTO_BUF_RTN = 4;
+		}
+
+		namespace InnerCommand
+		{
+			const uint32_t REQ_LOADBALANCE_CMD = 1;
+			const uint32_t RTN_LOADBALANCE_CMD = 2;
+		}
 	}
 }
 

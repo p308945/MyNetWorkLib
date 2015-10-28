@@ -29,7 +29,7 @@ namespace MyNameSpace
 		const int MAX_ACCOUNT_LEN = 48;
 		struct ReqLogin : BaseCommand
 		{
-			ReqLogin() : BaseCommand(REQ_LOGIN_CMD, COMMAND_TYPE::OUTTER)
+			ReqLogin() : BaseCommand(OutterCommand::REQ_LOGIN_CMD, COMMAND_TYPE::OUTTER)
 			{
 				memset(account, 0x0, sizeof(account));
 			}
@@ -38,7 +38,7 @@ namespace MyNameSpace
 
 		struct RtnLogin : BaseCommand
 		{
-			RtnLogin() : BaseCommand(RTN_LOGIN_CMD, COMMAND_TYPE::OUTTER)
+			RtnLogin() : BaseCommand(OutterCommand::RTN_LOGIN_CMD, COMMAND_TYPE::OUTTER)
 			{
 				res = 0;
 				memset(account, 0x0, sizeof(account));

@@ -19,7 +19,9 @@
 
 #ifndef __LOGINPROCESS_H_
 #define __LOGINPROCESS_H_
+
 #include "BaseCmd.h"
+
 namespace MyNameSpace
 {
 	class LoginProcess
@@ -29,6 +31,7 @@ namespace MyNameSpace
 			~LoginProcess() {}
 		public:
 			bool ReqLogin(const Command::BaseCommand *cmd, uint32_t len, int taskId);
+			bool testProtobuf(const Command::BaseCommand *cmd, uint32_t len, int taskId);
 
 	};
 #endif

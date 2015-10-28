@@ -12,7 +12,7 @@ namespace MyNameSpace
 			{
 				time(&start);
 			}
-			time_t eplase()
+			time_t elapse()
 			{
 				time_t now;
 				time(&now);

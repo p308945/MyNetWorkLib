@@ -95,7 +95,8 @@ namespace MyNameSpace
 	}
 	void Server::initCallBack()
 	{
-		regOutterCallBack(Command::REQ_LOGIN_CMD, std::bind(&LoginProcess::ReqLogin, &loginProcess, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		regOutterCallBack(Command::OutterCommand::REQ_LOGIN_CMD, std::bind(&LoginProcess::ReqLogin, &loginProcess, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		regOutterCallBack(Command::OutterCommand::TEST_PROTO_BUF, std::bind(&LoginProcess::testProtobuf, &loginProcess, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	}
 	bool Server::newTask(int sock)
 	{

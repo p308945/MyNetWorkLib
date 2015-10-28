@@ -21,13 +21,14 @@
 #include "MySockTask.h"
 #include "MySockTaskManager.h"
 #include "LoginProcessCmd.h"
+#include "protobuf/test.pb.h"
 
 namespace MyNameSpace
 {
 	bool LoginProcess::ReqLogin(const Command::BaseCommand *cmd, uint32_t len, int taskId)
 	{
 		MySockTask* task = MySockTaskManager::getInstance().getTaskByIdWithOutLock(taskId);
-		std::cout<<taskId<<std::endl;
+		std::cout<<" taskId: "<<taskId<<"struct msgid: "<<cmd->mCmdId<<std::endl;
 		if (NULL != task)
 		{
 			const Command::ReqLogin *rcv = static_cast<const Command::ReqLogin *>(cmd);
@@ -40,4 +41,28 @@ namespace MyNameSpace
 		}
 		return true;
 	}
+
+	bool LoginProcess::testProtobuf(const Command::BaseCommand *cmd, uint32_t len, int taskId)
+	{
+		MySockTask* task = MySockTaskManager::getInstance().getTaskByIdWithOutLock(taskId);
+		std::cout<<" taskId: "<<taskId<<"protobuf msgid: "<<cmd->mCmdId<<std::endl;
+		if (NULL != task)
+		{
+			const char *pBuf = (const char *)cmd;
+			pBuf += sizeof(Command::BaseCommand);
+			MyProtoBuf::CMsgLoginReq msg;
+			msg.ParseFromArray(pBuf, len - sizeof(Command::BaseCommand));
+			std::cout<<"login "<<msg.account()<<std::endl;
+
+			Command::ProtobufBaseCommand rtn(Command::OutterCommand::TEST_PROTO_BUF_RTN, Command::COMMAND_TYPE::OUTTER);
+
+			MyProtoBuf::CMsgLoginRtn rtnBuf;
+			rtnBuf.set_ret(1);
+			rtnBuf.SerializeToArray(rtn.protobuf, Command::MAX_PROTOBUF_SIZE - sizeof(Command::BaseCommand));
+			uint32_t protoSize = rtnBuf.ByteSize();
+			task->sendDataWithBuffer(reinterpret_cast<const char *>(&rtn), sizeof(Command::BaseCommand) + protoSize);
+		}
+		return true;
+	}
+
 }

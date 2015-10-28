@@ -1,11 +1,11 @@
 CXXFLAGS=-Wall -std=c++11 -g -Wparentheses -Wl,-rpath,../lib
 #CXXFLAGS=-Wall -std=c++11 -g -gstabs+
 INCLUDE= -I../base -I../server -I../client  -I../proto -I../lib/tinyxml
-LDFLAGS= -L../lib -lhyServer -L../lib -lhyClient -L../lib/tinyxml -ltinyxml
+LDFLAGS= -L../lib -lhyServer -L../lib -lhyClient -L../lib/tinyxml -ltinyxml -lprotobuf
 .PHONY : all
 all : server
-server : main.o Server.o XmlconfigParse.o LoginProcess.o
-	g++ $(CXXFLAGS) $(INCLUDE) main.o Server.o LoginProcess.o XmlconfigParse.o -o $@ $(LDFLAGS) 
+server : main.o Server.o XmlconfigParse.o LoginProcess.o test.pb.o
+	g++ $(CXXFLAGS) $(INCLUDE) main.o Server.o test.pb.o LoginProcess.o XmlconfigParse.o -o $@ $(LDFLAGS) 
 main.o : main.cpp
 	g++ $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 Server.o : Server.cpp Server.h
@@ -15,6 +15,9 @@ XmlconfigParse.o : XmlconfigParse.cpp XmlconfigParse.h
 	g++ $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 LoginProcess.o : LoginProcess.cpp LoginProcess.h
 	g++ $(CXXFLAGS) $(INCLUDE) -c $< -o $@
+
+test.pb.o : ../proto/protobuf/test.pb.cc
+	g++ $(CXXFLAGS) -c $< -o $@
 
 clean:
 	rm -rf server
