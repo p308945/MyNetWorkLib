@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS `USERINFO`;  
+CREATE TABLE `USERINFO` (  
+		`id` int(10) unsigned NOT NULL AUTO_INCREMENT,  
+		`USERID` int(8) unsigned NOT NULL,  
+		`MYNAME` varchar(32) NOT NULL,
+		`ISOK` varchar(1) NOT NULL,
+		PRIMARY KEY (`id`)  
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
