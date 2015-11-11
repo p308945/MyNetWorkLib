@@ -1,0 +1,4 @@
+for i in `ls *.proto`
+do
+	./protoc $i --cpp_out=./
+done
