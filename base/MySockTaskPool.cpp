@@ -12,6 +12,7 @@
 #include <set>
 #include "errno.h"
 #include "MySockTaskManager.h"
+#include <climits>
 
 namespace MyNameSpace
 {
@@ -125,6 +126,7 @@ namespace MyNameSpace
 					}
 					else if (len == 0)
 					{
+						std::cout<<"client close"<<std::endl;
 						taskWillDel.insert(task);
 					}
 					int getMsgRet = task->getMsg();
@@ -150,6 +152,7 @@ namespace MyNameSpace
 			}
 			if (!taskWillDel.empty())
 			{
+				std::cout<<"delete client size:"<<taskWillDel.size()<<std::endl;
 				std::set<MySockTask *>::iterator iter = taskWillDel.begin();
 				for (; iter != taskWillDel.end(); ++iter)
 				{
@@ -211,6 +214,8 @@ namespace MyNameSpace
 	bool MySockTaskPool::addTask(MySockTask * task)
 	{
 		int count = mIoThreadPool.getThreadCOunt();
+		int minCount = INT_MAX;
+		int index = -1;
 		for (int i = 0; i < count; ++i)
 		{
 			MyIoThread * thread = dynamic_cast<MyIoThread*>(mIoThreadPool.getThreadByIndex(i));
@@ -221,18 +226,38 @@ namespace MyNameSpace
 					if (!thread->start())
 					{
 						std::cerr<<__FUNCTION__<<":"<<__LINE__<<"thread start failed! "<< std::endl;
-						delete thread;
 						continue;
 					}
+					thread->addTask(task);
+					return true;
 				}
-				if (thread->getTaskCount() < mMaxConnPerIo)
+				if ((minCount > thread->getTaskCount()) && (thread->getTaskCount() < mMaxConnPerIo))
+				{
+					index = i;
+				}
+/* 				if (thread->getTaskCount() < mMaxConnPerIo)
 				{
 					thread->addTask(task);
 					return true;
 				}
+				else
+				{
+					std::cout<<"i: "<<i<<" mMaxConnPerIo: "<<mMaxConnPerIo<<" thread->getTaskCount(): "<<thread->getTaskCount()<<std::endl;
+				}
+				*/
 			}
 		}
-		std::cerr<<__FUNCTION__<<":"<<__LINE__<<"task add error! "<< std::endl;
+		if (-1 == index)
+		{
+			std::cerr<<__FUNCTION__<<":"<<__LINE__<<"task add error! "<< std::endl;
+			return false;
+		}
+		MyIoThread * thread = dynamic_cast<MyIoThread*>(mIoThreadPool.getThreadByIndex(index));
+		if (NULL != thread)
+		{
+			thread->addTask(task);
+			return true;
+		}
 		return false;
 	}
 
