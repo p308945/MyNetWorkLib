@@ -25,6 +25,7 @@
 #include "MySockClientTaskPool.h"
 #include "types.h"
 #include "LoginProcess.h"
+#include "MyCsvParse.h"
 
 namespace MyNameSpace
 {
@@ -32,7 +33,7 @@ namespace MyNameSpace
 	class Server : public MyBaseServer
 	{
 		public:
-			Server() : mServerTaskPool(4, 32), mServerUniqueId(0)
+			Server() : mServerTaskPool(4, 4096), mServerUniqueId(0)
 			{
 			}
 			virtual bool init(unsigned short port);

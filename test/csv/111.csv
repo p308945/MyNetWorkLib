@@ -1,0 +1,6 @@
+用户等级,升级消耗,血量,攻击力,描述
+userLevel,consume,bloodVolume,attackPower,descrption
+uint32,uint32,uint32,uint32,string
+1,10,100,10,one
+2,20,200,20,two
+3,30,300,30,three

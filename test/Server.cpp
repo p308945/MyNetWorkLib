@@ -25,6 +25,7 @@
 #include "MyThread.h"
 #include "XmlconfigParse.h"
 #include "CmdNumber.h"
+#include "MyCsvParse.h"
 
 namespace MyNameSpace
 {
@@ -83,6 +84,12 @@ namespace MyNameSpace
 		{
 			std::cout<<"ip: "<<iter.ip<<" id: "<<iter.id<<" port: "<<iter.port<<" type: "<<iter.type<<std::endl;
 			newClient(iter.ip.c_str(), iter.port, iter.id, iter.type);
+		}
+
+		if (!MyCsvParse::getInstance().init())
+		{
+			std::cerr<<__FUNCTION__<<"("<<__LINE__<<"): mCsvParse init fail"<<std::endl;
+			return false;
 		}
 		initCallBack();
 		return true;
