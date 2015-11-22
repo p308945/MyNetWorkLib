@@ -153,99 +153,101 @@ namespace MyNameSpace
 			return false;\
 		}
 
+
+#define ParseData(className, dataName)		\
+			std::string line;\
+			std::string value;\
+			std::shared_ptr<className> p(new className());\
+			while(getline(is.GetInnerStream(), line, '\n'))\
+			{\
+				dataName data;\
+				int i = 0;\
+				last_found = 0;\
+				found = line.find_first_of(",");\
+				while(true)\
+				{\
+					if (found == std::string::npos)\
+					{\
+						value.assign(std::string(line, last_found, line.size() - last_found));\
+					}\
+					else\
+					{\
+						value.assign(std::string(line, last_found, found - last_found));\
+					}\
+					/*\
+					std::cerr<<dataTypeVec[i]<<std::endl;\
+					std::cerr<<"------------------------"<<std::endl;\
+					for (auto tmp : MyCsvParse::mDataTypeMap)\
+					{\
+						std::cerr<<tmp.first<<" size:"<<tmp.first.size()<<std::endl;\
+					}\
+					std::cerr<<"------------------------"<<std::endl;\
+					*/\
+					auto iter = MyCsvParse::mDataTypeMap.find(dataTypeVec[i]);\
+					if (MyCsvParse::mDataTypeMap.end() == iter)\
+					{\
+						std::cerr<<"No support Type:"<<dataTypeVec[i]<<std::endl;\
+						return false;\
+					}\
+					switch(iter->second)\
+					{\
+						case MyCsvParse::eINT32:\
+							{\
+								*((int32_t*)((char *)(&data) + data.memberOffsetVec[i])) = atoi(value.c_str());\
+							}\
+							break;\
+						case MyCsvParse::eUINT32:\
+							{\
+								*((uint32_t*)((char *)(&data) + data.memberOffsetVec[i])) = strtoul(value.c_str(), 0, 0);\
+							}\
+							break;\
+						case MyCsvParse::eFLOAT:\
+							{\
+								*((float*)((char *)(&data) + data.memberOffsetVec[i])) = atof(value.c_str());\
+							}\
+							break;\
+						case MyCsvParse::eDOUBLE:\
+							{\
+								*((double*)((char *)(&data) + data.memberOffsetVec[i])) = atof(value.c_str());\
+							}\
+							break;\
+						case MyCsvParse::eSTRING:\
+							{\
+								((std::string *)((char *)(&data) + data.memberOffsetVec[i]))->assign(value);\
+							}\
+							break;\
+						default:\
+							{\
+								std::cerr<<"impossible run here Type not support!!!"<<std::endl;\
+								return false;\
+							}\
+							break;\
+					}\
+					if (found == std::string::npos)\
+					{\
+						break;\
+					}\
+					last_found = found + 1;\
+					found = line.find_first_of(",", last_found);\
+					++i;\
+				}\
+				std::cout<<"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"<<std::endl;\
+				std::cout<<data.userLevel<<std::endl;\
+				std::cout<<data.consume<<std::endl;\
+				std::cout<<data.bloodVolume<<std::endl;\
+				std::cout<<data.attackPower<<std::endl;\
+				std::cout<<data.descrption<<std::endl;\
+				p->mData.push_back(data);\
+				line.clear(); \
+			}\
+			MyCsvParse::mConfigMap[fileName] = p; \
+			return true;
+
 		bool ParseTest111(const std::string &fileName)
 		{
 			std::string fullFileName = "csv/" + fileName;
 			ParseHead(fullFileName);
-			std::string line;
-			std::string value;
-			std::shared_ptr<stTest111> p(new stTest111());
-			while(getline(is.GetInnerStream(), line, '\n'))
-			{
-				stTest111Data data;
-				int i = 0;
-				last_found = 0;
-				found = line.find_first_of(",");
-				while(true)
-				{
-					if (found == std::string::npos)
-					{
-						value.assign(std::string(line, last_found, line.size() - last_found));
-					}
-					else
-					{
-						value.assign(std::string(line, last_found, found - last_found));
-					}
-					/*
-					std::cerr<<dataTypeVec[i]<<std::endl;
-					std::cerr<<"------------------------"<<std::endl;
-					for (auto tmp : MyCsvParse::mDataTypeMap)
-					{
-						std::cerr<<tmp.first<<" size:"<<tmp.first.size()<<std::endl;
-					}
-					std::cerr<<"------------------------"<<std::endl;
-					*/
-					auto iter = MyCsvParse::mDataTypeMap.find(dataTypeVec[i]);
-					if (MyCsvParse::mDataTypeMap.end() == iter)
-					{
-						std::cerr<<"No support Type:"<<dataTypeVec[i]<<std::endl;
-						return false;
-					}
-					switch(iter->second)
-					{
-						case MyCsvParse::eINT32:
-							{
-								*((int32_t*)((char *)(&data) + data.memberOffsetVec[i])) = atoi(value.c_str());
-							}
-							break;
-						case MyCsvParse::eUINT32:
-							{
-								*((uint32_t*)((char *)(&data) + data.memberOffsetVec[i])) = strtoul(value.c_str(), 0, 0);
-							}
-							break;
-						case MyCsvParse::eFLOAT:
-							{
-								*((float*)((char *)(&data) + data.memberOffsetVec[i])) = atof(value.c_str());
-							}
-							break;
-						case MyCsvParse::eDOUBLE:
-							{
-								*((double*)((char *)(&data) + data.memberOffsetVec[i])) = atof(value.c_str());
-							}
-							break;
-						case MyCsvParse::eSTRING:
-							{
-								((std::string *)((char *)(&data) + data.memberOffsetVec[i]))->assign(value);
-							}
-							break;
-						default:
-							{
-								std::cerr<<"impossible run here Type not support!!!"<<std::endl;
-								return false;
-							}
-							break;
-					}
-					if (found == std::string::npos)
-					{
-						break;
-					}
-					last_found = found + 1;
-					found = line.find_first_of(",", last_found);
-					++i;
-				}
-				/*
-				std::cout<<"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"<<std::endl;
-				std::cout<<data.userLevel<<std::endl;
-				std::cout<<data.consume<<std::endl;
-				std::cout<<data.bloodVolume<<std::endl;
-				std::cout<<data.attackPower<<std::endl;
-				std::cout<<data.descrption<<std::endl;
-				*/
-				p->mData.push_back(data);
-				line.clear();
-			}
-			MyCsvParse::mConfigMap[fileName] = p;
-			return true;
+			ParseData(stTest111, stTest111Data);
 		}
 	}
 
